@@ -117,10 +117,15 @@ table1 <- xtabs(~infected + treatment, data=Female)
 rowPerc(table1)
 colPerc(table1)
 ```
+Among those who received the placebo treatment, 54.55% are infected, and 45.45% are not infected (OK). Aswell as those who received the vaccine treatment, 44.44% are infected, and 55.56% are not infected (OK).
+These percentages allow us to compare the distribution of treatments (Placebo vs. Vaccine) among the infected and not infected groups and vice versa. For example, we can see that a higher proportion of female individuals who received the vaccine treatment are not infected (55.56%) compared to those who received the placebo treatment (45.45%).
 
-
-
-
+```{r}
+chisq.test(table1)
+chisqtestGC(table1)
+guysfish <- fisher.test(table1)
+guysfish
+```
 
 
 ## LGBTQ
