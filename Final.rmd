@@ -18,6 +18,12 @@ FinalDat <-read.csv(file="final.csv",header=TRUE)
 FinalData <- FinalDat  %>% select(-one_of("X"))
 FinalData <- FinalData %>%
 mutate(across(where(is.character), as.factor))
+FinalData$treatment <- relevel(FinalData$treatment,ref="placebo")
+#FinalData$infected <- relevel(FinalData$infected,ref="OK")
+Male = filter(FinalData, sex =="M")
+Female = filter(FinalData, sex =="F")
+gay = filter(FinalData, LGBTQ =="gay")
+Druguser = filter(FinalData, DrugUser =="yes")
 ```
 
 # Introduction
@@ -25,9 +31,96 @@ mutate(across(where(is.character), as.factor))
 A new  preventative vaccine (covid921) is under test in clinical trials. Given the nature of this vaccine it is suspected that the drug may exhibit different effectiveness across the variety of subpopulations tracked. Consider population subgroups by gender( guys and gals), drug use, and sexual orientation. Write a complete report that separately considers this drug for each subgroup and your recommendations as to whether people in the subgroup should take the vaccine. Structure your report in four sections each devoted to one of the four subgroups, use null and alternative hypothesis statements and correct statistical verbage when referencing p-values in conclusions.
 
 ## Males
+Barplot
+```{r}
+dd2 <- Male%>% group_by(infected,treatment) %>% summarize(count=n()) %>% mutate(prcnt=count/sum(count))
 
+
+# the group_by followed by summarize(count=n())
+
+basicC <- ggplot(dd2,aes(x=infected,y=count,fill=treatment))
+basicC + geom_bar(stat="identity",position="dodge")
+
+#Now for percentage plot
+
+basicCC <- ggplot(dd2,aes(x=infected,y=prcnt*100,fill=treatment)) 
+basicCC + geom_bar(stat="identity", position = "dodge")
+```
+
+#numerical
+```{r}
+table1 <- xtabs(~infected + treatment, data=Male)
+rowPerc(table1)
+colPerc(table1)
+```
+Among the individuals who are infected, 70% received the placebo treatment, and 30% received the vaccine treatment.
+Among the individuals who are not infected (OK), 50% received the placebo treatment, and 50% received the vaccine treatment.
+Column Percentages:
+
+Those who received the placebo treatment, 58.33% are infected, and 41.67% are not infected (OK).
+Among those who received the vaccine treatment, 37.5% are infected, and 62.5% are not infected (OK).
+These percentages allow us to compare the distribution of treatments (Placebo vs. Vaccine) among the infected and not infected groups and vice versa. For example, we can see that a higher proportion of individuals who received the vaccine treatment are not infected (62.5%) compared to those who received the placebo treatment (41.67%).
+
+
+```{r}
+chisq.test(table1)
+chisqtestGC(table1)
+guysfish <- fisher.test(table1)
+guysfish
+```
+The Chi-squared test assesses whether there is a significant association between infection status and treatment (placebo vs. vaccine).
+The Chi-Square Statistic measures the discrepancy between the observed counts and the expected counts under the assumption of independence between the two variables.
+The Degrees of Freedom (df) in this case is 1 because we are working with a 2x2 table, and df = (number of rows - 1) * (number of columns - 1) = (2 - 1) * (2 - 1) = 1.
+The P-Value (0.0002732) is the probability of obtaining a chi-square statistic as extreme as the one observed, assuming the null hypothesis is true (i.e., no association between infection status and treatment). In this case, the P-Value is very small, indicating strong evidence against the null hypothesis.
+Fisher's Exact Test is another test used for 2x2 contingency tables when sample sizes are small or when the Chi-squared test assumptions are violated.
+It also assesses the association between infection status and treatment.
+The P-Value (0.0002162) is again very small, suggesting strong evidence against the null hypothesis of no association.
+The odds ratio (1.493076) is a measure of association between infection status and treatment. In this case, an odds ratio greater than 1 indicates a positive association between being infected and receiving the vaccine. 
+
+Based on the small P-Values from both tests, we can conclude that there is strong evidence to reject the null hypothesis of no association between infection status and treatment. This suggests that there is a significant difference in vaccine efficacy between infected and non-infected individuals. The confidence interval for the odds ratio indicates that the true odds ratio lies between 1.199509 and 1.862988 with 95% confidence. Since the interval does not include 1, it suggests that the odds of receiving the vaccine differ significantly between infected and non-infected individuals. Overall, the statistical analysis suggests that there is a significant relationship between infection status and treatment, and the vaccine appears to have a different effectiveness for infected and non-infected individuals.
+
+```{r}
+effect <- guysfish$p.value/(guysfish$p.value +1)
+effectivenessguy = guysfish$estimate/(guysfish$estimate +1)*100
+print(effectivenessguy)
+```
+The odds ratio of 59.88891 for the male data suggests a significant association between two categorical variables, most likely comparing the effectiveness of a treatment (such as a vaccine) for two groups within the male population.since the odds ratio is 59.88891, it means that the event (effectiveness of the treatment, which could be the vaccine) is approximately 59.89 times more likely to occur in the first group (e.g., individuals who received the treatment) compared to the second group (e.g., individuals who did not receive the treatment).
+
+A large odds ratio like this indicates a substantial effect size, suggesting a significant difference in treatment effectiveness between the two groups within the male population.
+
+However, keep in mind that interpretation of the odds ratio requires a good understanding of the specific context of the analysis, the variables involved, and the data collection process. 
+
+```{r}
+low=(guysfish$conf.int[1]/(guysfish$conf.int[1] +1))*100
+hi=(guysfish$conf.int[2]/(guysfish$conf.int[2] +1))*100
+options(digits=2)
+```
 
 ## Females
+```{r}
+dd2 <- Female%>% group_by(infected,treatment) %>% summarize(count=n()) %>% mutate(prcnt=count/sum(count))
+
+
+# the group_by followed by summarize(count=n())
+
+basicC <- ggplot(dd2,aes(x=infected,y=count,fill=treatment))
+basicC + geom_bar(stat="identity",position="dodge")
+
+#Now for percentage plot
+
+basicCC <- ggplot(dd2,aes(x=infected,y=prcnt*100,fill=treatment)) 
+basicCC + geom_bar(stat="identity", position = "dodge")
+```
+#numerical
+```{r}
+table1 <- xtabs(~infected + treatment, data=Female)
+rowPerc(table1)
+colPerc(table1)
+```
+
+
+
+
 
 
 ## LGBTQ
