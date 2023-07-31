@@ -292,6 +292,52 @@ chisqtestGC(table1)
 Druguserfish <- fisher.test(table1)
 Druguserfish
 ```
+The provided R code performs statistical tests on the data regarding drug users, specifically Pearson's Chi-squared test with Yates' continuity correction and Fisher's Exact Test. The data is a 2x2 contingency table, comparing the number of drug users who were infected (covid19) and not infected (OK) under two different treatments (placebo and vaccine).
 
+Pearson's Chi-squared test with Yates' continuity correction:
+
+Chi-Square Statistic (X-squared) = 35
+Degrees of Freedom (df) = 1
+P-Value < 0.0001 (p-value = 3e-09)
+The Pearson's Chi-squared test assesses whether there is a significant association between the treatment (placebo vs. vaccine) and the infection status (covid19 vs. OK) in drug users. The chi-square statistic measures the difference between the observed and expected counts and compares it to what would be expected by chance alone. In this case, the test resulted in a chi-square value of 35 and a very low p-value (p < 0.0001).
+
+Since the p-value is less than the usual significance level (e.g., 0.05), we can conclude that there is a statistically significant association between the treatment and the infection status in drug users. The treatment (placebo vs. vaccine) has a significant impact on the likelihood of infection in drug users.
+
+Fisher's Exact Test:
+
+P-Value < 0.0001 (p-value = 2e-10)
+95 percent confidence interval for odds ratio: 0.048 to 0.279
+Estimated odds ratio: 0.13
+Fisher's Exact Test is another statistical test used to determine the association between two categorical variables. In this case, it evaluates the association between the treatment (placebo vs. vaccine) and the infection status (covid19 vs. OK) in drug users.
+
+The test yielded a very low p-value (p < 0.0001), indicating a highly significant association between the treatment and the infection status in drug users.
+
+The odds ratio, estimated to be 0.13, indicates that the odds of infection are approximately 0.13 times lower in drug users who received the vaccine compared to those who received the placebo. In other words, the vaccine is associated with a significantly reduced risk of infection in drug users compared to the placebo.
+
+In summary, both the Pearson's Chi-squared test and Fisher's Exact Test provide strong evidence that the treatment (COVID921 vaccine) has a significant effect on the infection status in drug users. The vaccine appears to be associated with a substantially lower likelihood of infection compared to the placebo for drug users.
+
+```{r}
+effect <- Druguserfish$p.value/(Druguserfish$p.value +1)
+effectivenessDruguser = Druguserfish$estimate/(Druguserfish$estimate +1)*100
+print(effectivenessDruguser)
+```
+The provided R code calculates the effectiveness of a certain treatment using the odds ratio and the estimate obtained from Fisher's Exact Test on the data related to drug users. The code uses the odds ratio and the estimate (in percentage) to determine the treatment's effectiveness.
+
+In this line, the code calculates a value called "effect" by dividing the p-value from Fisher's Exact Test by the sum of the p-value and 1. The p-value obtained from Fisher's Exact Test is used to assess the statistical significance of the association between the treatment and the infection status in drug users. Dividing the p-value by (p-value + 1) may be an attempt to transform the p-value into a measure of effect size, but without more context or information about the intention behind this calculation, it is challenging to interpret its meaning.In this line, the code calculates a value called "effectivenessDruguser" by dividing the estimate (odds ratio) obtained from Fisher's Exact Test by the sum of the estimate and 1, and then multiplying the result by 100. The odds ratio is a measure of association between the treatment and the infection status in drug users. By dividing the odds ratio by (odds ratio + 1) and multiplying the result by 100, the code calculates the percentage effectiveness of the treatment.The result "11" represents the calculated effectiveness of the treatment (COVID921 vaccine) in drug users in percentage based on Fisher's Exact Test. However, without additional information, it is not entirely clear what this percentage refers to. The odds ratio, which is typically the measure calculated from Fisher's Exact Test, provides information about the strength and direction of the association between the treatment (vaccine vs. placebo) and the outcome (covid19 infection vs. not infected) in drug users.
+
+An odds ratio of 11 suggests that the odds of infection among drug users who received the vaccine are 11 times higher compared to those who received the placebo. 
 
 # Overall Results and Conclusions
+
+Based on the statistical analyses conducted for different subgroups (gender, drug users, and sexual orientation), the effectiveness of the COVID921 vaccine compared to placebos can be summarized as follows:
+
+Gender Subgroup:
+
+In the gender subgroup analysis (males and females), both Pearson's Chi-squared test and Fisher's Exact Test provided strong evidence that the COVID921 vaccine had a significant effect on reducing infection rates.
+For both males and females, the vaccine was associated with a significantly lower likelihood of infection compared to the placebo. The odds ratios obtained from Fisher's Exact Test indicated that the vaccine reduced the odds of infection by approximately 80% to 85% in both genders.
+The overall effectiveness of the COVID921 vaccine was high in both males and females, making it a promising preventive measure against COVID-19.
+Drug Users Subgroup:
+
+In the drug users subgroup analysis, similar to the gender subgroup, both Pearson's Chi-squared test and Fisher's Exact Test revealed a significant association between the vaccine and reduced infection rates.
+The odds ratio obtained from Fisher's Exact Test suggested that the vaccine reduced the odds of infection by approximately 87%. This indicated that the vaccine was highly effective in protecting drug users from COVID-19.The results suggest that the COVID921 vaccine could be particularly valuable in safeguarding drug users who might be at higher risk of infection due to their lifestyle and associated health conditions.
+Overall, the statistical analyses demonstrated a clear association between the COVID921 vaccine and reduced infection rates in the studied sub populations. The vaccine showed significant effectiveness in protecting individuals from COVID-19, regardless of gender or drug use status. The odds ratios obtained from the Fisher's Exact Test consistently indicated a substantial reduction in the odds of infection with the vaccine.
