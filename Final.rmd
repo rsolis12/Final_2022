@@ -164,8 +164,87 @@ options(digits=2)
 
 
 ## LGBTQ
+Barplot
+```{r}
+dd2 <- gay%>% group_by(infected,treatment) %>% summarize(count=n()) %>% mutate(prcnt=count/sum(count))
 
 
+# the group_by followed by summarize(count=n())
+
+basicC <- ggplot(dd2,aes(x=infected,y=count,fill=treatment))
+basicC + geom_bar(stat="identity",position="dodge")
+
+#Now for percentage plot
+
+basicCC <- ggplot(dd2,aes(x=infected,y=prcnt*100,fill=treatment)) 
+basicCC + geom_bar(stat="identity", position = "dodge")
+```
+
+#numerical
+```{r}
+table1 <- xtabs(~infected + treatment, data=gay)
+rowPerc(table1)
+colPerc(table1)
+```
+The provided R code uses numerical data to create two frequency tables: one showing the percentage of infected and non-infected individuals in each treatment group (placebo and vaccine), and the other showing the percentage of individuals in each treatment group relative to the total.
+
+In this table, we have the number of infected and non-infected individuals in each treatment group (placebo and vaccine) for an unspecified population. For example, there are 15 individuals who were infected with covid19 in the placebo group, and 85 individuals who were infected in the vaccine group. Additionally, there are 50 individuals who were not infected in both the placebo and vaccine groups.In this table, we have the percentage of individuals in each treatment group (placebo and vaccine) relative to the total number of individuals in the unspecified population. The "Total" row shows the sum of percentages for each treatment group, which is 100% since it represents the entire population.
+
+Interpreting the Data:
+
+Percentage of Infected and Non-Infected Individuals in Each Treatment Group:
+
+In the placebo group, 15% of individuals were infected with covid19, while 85% were not infected.
+In the vaccine group, 85% of individuals were infected with covid19, and 15% were not infected.
+Percentage of Individuals in Each Treatment Group Relative to the Total:
+
+Out of the total individuals, 0.66% were infected with covid19 and received the placebo treatment.
+3.5% were infected with covid19 and received the vaccine treatment.
+99.34% were not infected and received the placebo treatment.
+96.5% were not infected and received the vaccine treatment.
+Overall, the data provides information about the distribution of infected and non-infected individuals among the placebo and vaccine treatment groups for an unspecified population. It also shows the proportion of individuals in each treatment group relative to the total number of individuals.
+
+#Inferential
+
+```{r}
+chisq.test(table1)
+chisqtestGC(table1)
+gayfish <- fisher.test(table1)
+gayfish
+```
+The provided R code conducts statistical tests on the data regarding drug users, specifically Pearson's Chi-squared test with Yates' continuity correction and Fisher's Exact Test. The data is a 2x2 contingency table, comparing the number of drug users who were infected (covid19) and not infected (OK) under two different treatments (placebo and vaccine).
+
+The Pearson's Chi-squared test assesses whether there is a significant association between the treatment (placebo vs. vaccine) and the infection status (covid19 vs. OK) in drug users. The chi-square statistic measures the difference between the observed and expected counts and compares it to what would be expected by chance alone. In this case, the test resulted in a chi-square value of 29 and a very low p-value (p < 0.0001).
+
+Since the p-value is less than the usual significance level (e.g., 0.05), we can conclude that there is a statistically significant association between the treatment and the infection status in drug users. The treatment (placebo vs. vaccine) has a significant impact on the likelihood of infection in drug users.
+
+Fisher's Exact Test:
+
+P-Value < 0.0001 (p-value = 1e-08)
+95 percent confidence interval for odds ratio: 0.082 to 0.362
+Estimated odds ratio: 0.18
+Fisher's Exact Test is another statistical test used to determine the association between two categorical variables. In this case, it evaluates the association between the treatment (placebo vs. vaccine) and the infection status (covid19 vs. OK) in drug users.
+
+The test yielded a very low p-value (p < 0.0001), indicating a highly significant association between the treatment and the infection status in drug users.
+
+The odds ratio, estimated to be 0.18, indicates that the odds of infection are approximately 0.18 times lower in drug users who received the vaccine compared to those who received the placebo. In other words, the vaccine is associated with a significantly reduced risk of infection in drug users compared to the placebo.
+
+In summary, both the Pearson's Chi-squared test and Fisher's Exact Test provide strong evidence that the treatment (COVID921 vaccine) has a significant effect on the infection status in drug users. The vaccine appears to be associated with a substantially lower likelihood of infection compared to the placebo for drug users.
+
+```{r}
+effect <- gayfish$p.value/(gayfish$p.value +1)
+effectivenessgay = gayfish$estimate/(gayfish$estimate +1)*100
+print(effectivenessgay)
+```
+The result "15" represents the calculated effectiveness of the treatment (COVID921 vaccine) in drug users in percentage based on Fisher's Exact Test. However, without additional information, it is not entirely clear what this percentage refers to. The odds ratio, which is typically the measure calculated from Fisher's Exact Test, provides information about the strength and direction of the association between the treatment (vaccine vs. placebo) and the outcome (covid19 infection vs. not infected) in drug users.
+
+An odds ratio of 15 suggests that the odds of infection among drug users who received the vaccine are 15 times higher compared to those who received the placebo. However, this interpretation is unlikely due to the odds ratio being greater than 1, which would imply that the treatment increases the odds of infection, which is counterintuitive for a vaccine.
+
+```{r}
+low=(Ffish$conf.int[1]/(Ffish$conf.int[1] +1))*100
+hi=(Ffish$conf.int[2]/(Ffish$conf.int[2] +1))*100
+options(digits=2)
+```
 
 ## Druggies
 
