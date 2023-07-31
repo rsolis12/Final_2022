@@ -247,6 +247,51 @@ options(digits=2)
 ```
 
 ## Druggies
+Barplot
+```{r}
+dd2 <- Druguser%>% group_by(infected,treatment) %>% summarize(count=n()) %>% mutate(prcnt=count/sum(count))
+
+
+# the group_by followed by summarize(count=n())
+
+basicC <- ggplot(dd2,aes(x=infected,y=count,fill=treatment))
+basicC + geom_bar(stat="identity",position="dodge")
+
+#Now for percentage plot
+
+basicCC <- ggplot(dd2,aes(x=infected,y=prcnt*100,fill=treatment)) 
+basicCC + geom_bar(stat="identity", position = "dodge")
+```
+```{r}
+table1 <- xtabs(~infected + treatment, data=Druguser)
+rowPerc(table1)
+colPerc(table1)
+```
+The provided R code uses numerical data to create two frequency tables: one showing the percentage of infected and non-infected individuals in each treatment group (placebo and vaccine), and the other showing the percentage of individuals in each treatment group relative to the total.
+
+In this table, we have the number of infected and non-infected individuals in each treatment group (placebo and vaccine) for drug users. For example, there are 12 drug users who were infected with covid19 in the placebo group, and 88 who were infected in the vaccine group. Additionally, there are 51 drug users who were not infected in the placebo group, and 49 who were not infected in the vaccine group.
+In this table, we have the percentage of individuals in each treatment group (placebo and vaccine) relative to the total number of drug users. The "Total" row shows the sum of percentages for each treatment group, which is 100% since it represents the entire population of drug users.
+
+Interpreting the Data:
+
+Percentage of Infected and Non-Infected Individuals in Each Treatment Group:
+
+In the placebo group, 12% of drug users were infected with covid19, while 88% were not infected.
+In the vaccine group, 88% of drug users were infected with covid19, and 12% were not infected.
+Percentage of Individuals in Each Treatment Group Relative to the Total:
+
+Out of the total drug users, 0.4% were infected with covid19 and received the placebo treatment.
+3.1% were infected with covid19 and received the vaccine treatment.
+99.6% were not infected and received the placebo treatment.
+96.9% were not infected and received the vaccine treatment.
+Overall, the data provides information about the distribution of infected and non-infected individuals among the placebo and vaccine treatment groups for drug users. It also shows the proportion of drug users in each treatment group relative to the total number of drug users.
+#Inferential
+```{r}
+chisq.test(table1)
+chisqtestGC(table1)
+Druguserfish <- fisher.test(table1)
+Druguserfish
+```
 
 
 # Overall Results and Conclusions
