@@ -31,7 +31,7 @@ Druguser = filter(FinalData, DrugUser =="yes")
 A new  preventative vaccine (covid921) is under test in clinical trials. Given the nature of this vaccine it is suspected that the drug may exhibit different effectiveness across the variety of subpopulations tracked. Consider population subgroups by gender( guys and gals), drug use, and sexual orientation. Write a complete report that separately considers this drug for each subgroup and your recommendations as to whether people in the subgroup should take the vaccine. Structure your report in four sections each devoted to one of the four subgroups, use null and alternative hypothesis statements and correct statistical verbage when referencing p-values in conclusions.
 
 ## Males
-Barplot
+### Barplot
 ```{r}
 dd2 <- Male%>% group_by(infected,treatment) %>% summarize(count=n()) %>% mutate(prcnt=count/sum(count))
 
@@ -47,7 +47,7 @@ basicCC <- ggplot(dd2,aes(x=infected,y=prcnt*100,fill=treatment))
 basicCC + geom_bar(stat="identity", position = "dodge")
 ```
 
-#numerical
+### numerical
 ```{r}
 table1 <- xtabs(~infected + treatment, data=Male)
 rowPerc(table1)
@@ -61,7 +61,7 @@ Those who received the placebo treatment, 58.33% are infected, and 41.67% are no
 Among those who received the vaccine treatment, 37.5% are infected, and 62.5% are not infected (OK).
 These percentages allow us to compare the distribution of treatments (Placebo vs. Vaccine) among the infected and not infected groups and vice versa. For example, we can see that a higher proportion of individuals who received the vaccine treatment are not infected (62.5%) compared to those who received the placebo treatment (41.67%).
 
-
+### Inferential 
 ```{r}
 chisq.test(table1)
 chisqtestGC(table1)
@@ -78,7 +78,7 @@ Estimated odds ratio: 2.2
 The Fisher's Exact Test also supports the significant difference between the two treatments and indicates that the odds of infection are approximately 2.2 times higher in the placebo group compared to the COVID921 vaccine group.
 
 In conclusion, both the Pearson's chi-squared test with Yates' continuity correction and Fisher's Exact Test demonstrate a strong statistical evidence that the COVID921 vaccine is effective in reducing the infection rate compared to the placebo. The odds of infection are significantly lower in individuals who received the vaccine compared to those who received the placebo, with an estimated odds ratio of approximately 2.2. Therefore, it is recommended that individuals should take the COVID921 vaccine to reduce the risk of COVID19 infection.
-
+### Effectiveness Confidence Interval
 
 ```{r}
 effect <- Mfish$p.value/(Mfish$p.value +1)
@@ -96,7 +96,11 @@ hi=(Mfish$conf.int[2]/(Mfish$conf.int[2] +1))*100
 options(digits=2)
 ```
 
-## Females
+#### Effectiveness Confidence Interval `r low` to `r hi`
+
+
+### Females
+
 ```{r}
 dd2 <- Female%>% group_by(infected,treatment) %>% summarize(count=n()) %>% mutate(prcnt=count/sum(count))
 
@@ -111,7 +115,7 @@ basicC + geom_bar(stat="identity",position="dodge")
 basicCC <- ggplot(dd2,aes(x=infected,y=prcnt*100,fill=treatment)) 
 basicCC + geom_bar(stat="identity", position = "dodge")
 ```
-#numerical
+### numerical
 ```{r}
 table1 <- xtabs(~infected + treatment, data=Female)
 rowPerc(table1)
@@ -119,7 +123,7 @@ colPerc(table1)
 ```
 Among those who received the placebo treatment, 54.55% are infected, and 45.45% are not infected (OK). Aswell as those who received the vaccine treatment, 44.44% are infected, and 55.56% are not infected (OK).
 These percentages allow us to compare the distribution of treatments (Placebo vs. Vaccine) among the infected and not infected groups and vice versa. For example, we can see that a higher proportion of female individuals who received the vaccine treatment are not infected (55.56%) compared to those who received the placebo treatment (45.45%).
-#Inferential
+### Inferential 
 
 ```{r}
 chisq.test(table1)
@@ -146,7 +150,7 @@ The odds ratio, estimated to be 1.5, indicates that the odds of infection are 1.
 
 In summary, both the Pearson's Chi-squared test and Fisher's Exact Test provide strong evidence that the treatment (COVID921 vaccine) has a significant effect on the infection status in females. The vaccine appears to be associated with a lower likelihood of infection compared to the placebo.
 
-
+### Effectiveness Confidence Interval
 
 ```{r}
 effect <- Ffish$p.value/(Ffish$p.value +1)
@@ -162,9 +166,13 @@ hi=(Ffish$conf.int[2]/(Ffish$conf.int[2] +1))*100
 options(digits=2)
 ```
 
+#### Effectiveness Confidence Interval `r low` to `r hi`
+
 
 ## LGBTQ
-Barplot
+### Barplot
+
+
 ```{r}
 dd2 <- gay%>% group_by(infected,treatment) %>% summarize(count=n()) %>% mutate(prcnt=count/sum(count))
 
@@ -180,7 +188,7 @@ basicCC <- ggplot(dd2,aes(x=infected,y=prcnt*100,fill=treatment))
 basicCC + geom_bar(stat="identity", position = "dodge")
 ```
 
-#numerical
+### numerical
 ```{r}
 table1 <- xtabs(~infected + treatment, data=gay)
 rowPerc(table1)
@@ -204,7 +212,7 @@ Out of the total individuals, 0.66% were infected with covid19 and received the 
 96.5% were not infected and received the vaccine treatment.
 Overall, the data provides information about the distribution of infected and non-infected individuals among the placebo and vaccine treatment groups for an unspecified population. It also shows the proportion of individuals in each treatment group relative to the total number of individuals.
 
-#Inferential
+### Inferential 
 
 ```{r}
 chisq.test(table1)
@@ -245,9 +253,12 @@ low=(Ffish$conf.int[1]/(Ffish$conf.int[1] +1))*100
 hi=(Ffish$conf.int[2]/(Ffish$conf.int[2] +1))*100
 options(digits=2)
 ```
+#### Effectiveness Confidence Interval `r low` to `r hi`
+
 
 ## Druggies
-Barplot
+### Barplot
+
 ```{r}
 dd2 <- Druguser%>% group_by(infected,treatment) %>% summarize(count=n()) %>% mutate(prcnt=count/sum(count))
 
@@ -262,6 +273,7 @@ basicC + geom_bar(stat="identity",position="dodge")
 basicCC <- ggplot(dd2,aes(x=infected,y=prcnt*100,fill=treatment)) 
 basicCC + geom_bar(stat="identity", position = "dodge")
 ```
+### numerical
 ```{r}
 table1 <- xtabs(~infected + treatment, data=Druguser)
 rowPerc(table1)
@@ -285,7 +297,7 @@ Out of the total drug users, 0.4% were infected with covid19 and received the pl
 99.6% were not infected and received the placebo treatment.
 96.9% were not infected and received the vaccine treatment.
 Overall, the data provides information about the distribution of infected and non-infected individuals among the placebo and vaccine treatment groups for drug users. It also shows the proportion of drug users in each treatment group relative to the total number of drug users.
-#Inferential
+### Inferential 
 ```{r}
 chisq.test(table1)
 chisqtestGC(table1)
@@ -326,6 +338,14 @@ The provided R code calculates the effectiveness of a certain treatment using th
 In this line, the code calculates a value called "effect" by dividing the p-value from Fisher's Exact Test by the sum of the p-value and 1. The p-value obtained from Fisher's Exact Test is used to assess the statistical significance of the association between the treatment and the infection status in drug users. Dividing the p-value by (p-value + 1) may be an attempt to transform the p-value into a measure of effect size, but without more context or information about the intention behind this calculation, it is challenging to interpret its meaning.In this line, the code calculates a value called "effectivenessDruguser" by dividing the estimate (odds ratio) obtained from Fisher's Exact Test by the sum of the estimate and 1, and then multiplying the result by 100. The odds ratio is a measure of association between the treatment and the infection status in drug users. By dividing the odds ratio by (odds ratio + 1) and multiplying the result by 100, the code calculates the percentage effectiveness of the treatment.The result "11" represents the calculated effectiveness of the treatment (COVID921 vaccine) in drug users in percentage based on Fisher's Exact Test. However, without additional information, it is not entirely clear what this percentage refers to. The odds ratio, which is typically the measure calculated from Fisher's Exact Test, provides information about the strength and direction of the association between the treatment (vaccine vs. placebo) and the outcome (covid19 infection vs. not infected) in drug users.
 
 An odds ratio of 11 suggests that the odds of infection among drug users who received the vaccine are 11 times higher compared to those who received the placebo. 
+
+```{r}
+low=(Druguserfish$conf.int[1]/(Druguserfish$conf.int[1] +1))*100
+hi=(Druguserfish$conf.int[2]/(Druguserfish$conf.int[2] +1))*100
+options(digits=2)
+```
+#### Effectiveness Confidence Interval `r low` to `r hi`
+
 
 # Overall Results and Conclusions
 
