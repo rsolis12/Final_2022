@@ -65,34 +65,34 @@ These percentages allow us to compare the distribution of treatments (Placebo vs
 ```{r}
 chisq.test(table1)
 chisqtestGC(table1)
-guysfish <- fisher.test(table1)
-guysfish
+Mfish <- fisher.test(table1)
+Mfish
 ```
-The Chi-squared test assesses whether there is a significant association between infection status and treatment (placebo vs. vaccine).
-The Chi-Square Statistic measures the discrepancy between the observed counts and the expected counts under the assumption of independence between the two variables.
-The Degrees of Freedom (df) in this case is 1 because we are working with a 2x2 table, and df = (number of rows - 1) * (number of columns - 1) = (2 - 1) * (2 - 1) = 1.
-The P-Value (0.0002732) is the probability of obtaining a chi-square statistic as extreme as the one observed, assuming the null hypothesis is true (i.e., no association between infection status and treatment). In this case, the P-Value is very small, indicating strong evidence against the null hypothesis.
-Fisher's Exact Test is another test used for 2x2 contingency tables when sample sizes are small or when the Chi-squared test assumptions are violated.
-It also assesses the association between infection status and treatment.
-The P-Value (0.0002162) is again very small, suggesting strong evidence against the null hypothesis of no association.
-The odds ratio (1.493076) is a measure of association between infection status and treatment. In this case, an odds ratio greater than 1 indicates a positive association between being infected and receiving the vaccine. 
+The p-value obtained is highly significant (p < 0.0001), suggesting a strong association between the treatment (placebo vs. vaccine) and infection status (COVID19 vs. OK). With a low p-value, we reject the null hypothesis and conclude that there is a statistically significant difference in infection rates between individuals who received the placebo and those who received the COVID921 vaccine.
 
-Based on the small P-Values from both tests, we can conclude that there is strong evidence to reject the null hypothesis of no association between infection status and treatment. This suggests that there is a significant difference in vaccine efficacy between infected and non-infected individuals. The confidence interval for the odds ratio indicates that the true odds ratio lies between 1.199509 and 1.862988 with 95% confidence. Since the interval does not include 1, it suggests that the odds of receiving the vaccine differ significantly between infected and non-infected individuals. Overall, the statistical analysis suggests that there is a significant relationship between infection status and treatment, and the vaccine appears to have a different effectiveness for infected and non-infected individuals.
+Additionally, Fisher's Exact Test for Count Data was also performed, which provided similar results:
+
+P-Value < 0.0001 (p-value = 5e-14)
+95 percent confidence interval for odds ratio: 1.8 to 2.8
+Estimated odds ratio: 2.2
+The Fisher's Exact Test also supports the significant difference between the two treatments and indicates that the odds of infection are approximately 2.2 times higher in the placebo group compared to the COVID921 vaccine group.
+
+In conclusion, both the Pearson's chi-squared test with Yates' continuity correction and Fisher's Exact Test demonstrate a strong statistical evidence that the COVID921 vaccine is effective in reducing the infection rate compared to the placebo. The odds of infection are significantly lower in individuals who received the vaccine compared to those who received the placebo, with an estimated odds ratio of approximately 2.2. Therefore, it is recommended that individuals should take the COVID921 vaccine to reduce the risk of COVID19 infection.
+
 
 ```{r}
-effect <- guysfish$p.value/(guysfish$p.value +1)
-effectivenessguy = guysfish$estimate/(guysfish$estimate +1)*100
-print(effectivenessguy)
+effect <- Mfish$p.value/(Mfish$p.value +1)
+effectivenessM = Mfish$estimate/(Mfish$estimate +1)*100
+print(effectivenessM)
 ```
-The odds ratio of 59.88891 for the male data suggests a significant association between two categorical variables, most likely comparing the effectiveness of a treatment (such as a vaccine) for two groups within the male population.since the odds ratio is 59.88891, it means that the event (effectiveness of the treatment, which could be the vaccine) is approximately 59.89 times more likely to occur in the first group (e.g., individuals who received the treatment) compared to the second group (e.g., individuals who did not receive the treatment).
+The provided R code calculates the effectiveness of a certain treatment using the odds ratio and the estimate obtained from a statistical analysis. Specifically, the code uses the odds ratio and the estimate (in percentage) to determine the treatment's effectiveness.
 
-A large odds ratio like this indicates a substantial effect size, suggesting a significant difference in treatment effectiveness between the two groups within the male population.
+The result "69" represents the calculated effectiveness of the treatment in percentage. However, without knowing the context of the analysis, it's difficult to interpret what this percentage means. Typically, in medical or scientific studies, an effectiveness rate of 69% would indicate that the treatment is successful in achieving its intended outcome in 69% of cases or participants. However, it's essential to understand the specific treatment being evaluated, the study design, and the statistical analysis performed to provide a more accurate and meaningful interpretation of the result.
 
-However, keep in mind that interpretation of the odds ratio requires a good understanding of the specific context of the analysis, the variables involved, and the data collection process. 
 
 ```{r}
-low=(guysfish$conf.int[1]/(guysfish$conf.int[1] +1))*100
-hi=(guysfish$conf.int[2]/(guysfish$conf.int[2] +1))*100
+low=(Mfish$conf.int[1]/(Mfish$conf.int[1] +1))*100
+hi=(Mfish$conf.int[2]/(Mfish$conf.int[2] +1))*100
 options(digits=2)
 ```
 
@@ -119,12 +119,30 @@ colPerc(table1)
 ```
 Among those who received the placebo treatment, 54.55% are infected, and 45.45% are not infected (OK). Aswell as those who received the vaccine treatment, 44.44% are infected, and 55.56% are not infected (OK).
 These percentages allow us to compare the distribution of treatments (Placebo vs. Vaccine) among the infected and not infected groups and vice versa. For example, we can see that a higher proportion of female individuals who received the vaccine treatment are not infected (55.56%) compared to those who received the placebo treatment (45.45%).
+#Inferential
 
 ```{r}
 chisq.test(table1)
 chisqtestGC(table1)
-guysfish <- fisher.test(table1)
-guysfish
+Ffish <- fisher.test(table1)
+Ffish
+```
+
+
+
+
+```{r}
+effect <- Ffish$p.value/(Ffish$p.value +1)
+effectivenessF = Ffish$estimate/(Ffish$estimate +1)*100
+print(effectivenessF)
+```
+
+
+
+```{r}
+low=(Ffish$conf.int[1]/(Ffish$conf.int[1] +1))*100
+hi=(Ffish$conf.int[2]/(Ffish$conf.int[2] +1))*100
+options(digits=2)
 ```
 
 
