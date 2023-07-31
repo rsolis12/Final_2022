@@ -127,7 +127,24 @@ chisqtestGC(table1)
 Ffish <- fisher.test(table1)
 Ffish
 ```
+The provided R code conducts statistical tests on the data regarding females, particularly Pearson's Chi-squared test with Yates' continuity correction and Fisher's Exact Test. The data is a 2x2 contingency table, comparing the number of females who were infected (covid19) and not infected (OK) under two different treatments (placebo and vaccine).
 
+he Pearson's Chi-squared test assesses whether there is a significant association between the treatment (placebo vs. vaccine) and the infection status (covid19 vs. OK) in females. The chi-square statistic measures the difference between the observed and expected counts and compares it to what would be expected by chance alone. In this case, the test resulted in a chi-square value of 13 and a p-value of 0.0003.
+
+Since the p-value is less than the usual significance level (e.g., 0.05), we can conclude that there is a statistically significant association between the treatment and the infection status in females. The treatment (placebo vs. vaccine) has a significant impact on the likelihood of infection in females.
+
+Fisher's Exact Test:
+
+P-Value = 2e-04 (0.0002)
+95 percent confidence interval for odds ratio: 1.2 to 1.9
+Estimated odds ratio: 1.5
+Fisher's Exact Test is another statistical test used to determine the association between two categorical variables. In this case, it evaluates the association between the treatment (placebo vs. vaccine) and the infection status (covid19 vs. OK) in females.
+
+The test yielded a p-value of 0.0002, which is less than the typical significance level. Thus, similar to the Chi-squared test, we can conclude that there is a statistically significant association between the treatment and the infection status in females.
+
+The odds ratio, estimated to be 1.5, indicates that the odds of infection are 1.5 times higher in females who received the placebo compared to those who received the vaccine.
+
+In summary, both the Pearson's Chi-squared test and Fisher's Exact Test provide strong evidence that the treatment (COVID921 vaccine) has a significant effect on the infection status in females. The vaccine appears to be associated with a lower likelihood of infection compared to the placebo.
 
 
 
@@ -136,7 +153,7 @@ effect <- Ffish$p.value/(Ffish$p.value +1)
 effectivenessF = Ffish$estimate/(Ffish$estimate +1)*100
 print(effectivenessF)
 ```
-
+The provided R code calculates the effectiveness of a certain treatment using the odds ratio and the estimate obtained from Fisher's Exact Test. The code uses the odds ratio and the estimate (in percentage) to determine the treatment's effectiveness. The result "60" represents the calculated effectiveness of the treatment in percentage. However, without knowing the specific values of the odds ratio and other context, it's difficult to interpret what this percentage means. Generally, an effectiveness rate of 60% would imply that the treatment is successful in achieving its intended outcome in 60% of cases or participants of 100.
 
 
 ```{r}
